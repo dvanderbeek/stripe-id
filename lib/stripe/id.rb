@@ -1,3 +1,4 @@
+require "friendly_id"
 require "stripe/id/railtie"
 require "stripe/id/generator"
 
