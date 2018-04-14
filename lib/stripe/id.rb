@@ -8,7 +8,7 @@ module Stripe
 
     included do
       def stripe_id
-        Generator.new(self.class.stripe_id_prefix).token
+        Generator.new(stripe_id_prefix).token
       end
     end
  
