@@ -5,11 +5,20 @@ require "stripe/id/generator"
 module Stripe
   module Id
     extend ActiveSupport::Concern
+
+    included do
+      def stripe_id
+        Generator.new(self.class.stripe_id_prefix).token
+      end
+    end
  
     class_methods do
       def stripe_id(prefix)
+        cattr_accessor :stripe_id_prefix
+        @@stripe_id_prefix = prefix
+
         extend FriendlyId
-        friendly_id -> { Generator.new(prefix.to_s).token }, use: :slugged
+        friendly_id :stripe_id, use: :slugged
       end
     end
   end
