@@ -6,16 +6,19 @@ module Stripe
   module Id
     extend ActiveSupport::Concern
 
+    mattr_accessor :prefix_map
+
+
     included do
       def stripe_id
-        Generator.new(stripe_id_prefix).token
+        Generator.new(Stripe::Id.prefix_map[self.class.name]).token
       end
     end
  
     class_methods do
       def stripe_id(prefix)
-        cattr_accessor :stripe_id_prefix
-        @@stripe_id_prefix = prefix
+        Stripe::Id.prefix_map ||= {}
+        Stripe::Id.prefix_map[self.name] = prefix
 
         extend FriendlyId
         friendly_id :stripe_id, use: :slugged
