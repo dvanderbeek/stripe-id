@@ -8,7 +8,6 @@ module Stripe
 
     mattr_accessor :prefix_map
 
-
     included do
       def stripe_id
         Generator.new(Stripe::Id.prefix_map[self.class.name]).token
